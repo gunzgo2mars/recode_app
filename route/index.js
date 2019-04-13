@@ -17,6 +17,9 @@ import { Components } from '../components/ComponentStyles'
 // #Screens
 // Stack
 import LoginScreen from '../screens/Login'
+import MapsScreen from '../screens/Maps'
+import PlaceScreen from '../screens/Maps/Place'
+import TagListScreen from '../screens/TagList'
 // Tab
 import HomeScreen from '../screens/Home'
 /// # Tab -> Camera Stack
@@ -25,6 +28,7 @@ import ProductScreen from '../screens/Product'
 
 /// # Tab -> Wishlist Stack
 import WishlistScreen from '../screens/Wishlist'
+import WishlistProductScreen from '../screens/Wishlist/WishlistProduct'
 
 /// # Tab -> Notification Stack
 import NotificationScreen from '../screens/Notification'
@@ -45,6 +49,32 @@ const Header = () => {
 
 
 }
+
+const MapStack = createStackNavigator({
+    
+    Maps : {
+
+        screen : MapsScreen,
+        navigationOptions : {
+
+            header : Header
+
+        }
+
+    },
+
+    Place : {
+
+        screen : PlaceScreen,
+        navigationOptions : {
+
+            header : Header
+
+        }
+
+    }
+
+})
 
 const SettingStack = createStackNavigator({
 
@@ -83,6 +113,39 @@ const WishlistStack = createStackNavigator({
 
         }
     },
+
+    WishlistProduct : {
+
+        screen : WishlistProductScreen,
+        navigationOptions : {
+
+            header : Header
+
+        }
+
+    },
+
+    MapWishlist : {
+
+        screen : MapStack,
+        navigationOptions : {
+
+            header : Header,
+
+        }
+
+    },
+
+    TagListWishList : {
+
+        screen : TagListScreen,
+        navigationOptions : {
+
+            header : Header
+
+        }
+
+    }
 
 
 })

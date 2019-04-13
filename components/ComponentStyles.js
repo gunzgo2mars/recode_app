@@ -1,6 +1,6 @@
 import { StyleSheet , Dimensions } from 'react-native'
 
-let width = Dimensions.get('window').width , height = Dimensions.get('window').height
+const width = Dimensions.get('window').width , height = Dimensions.get('window').height
 
 const Components = StyleSheet.create({
 
@@ -82,6 +82,9 @@ const Components = StyleSheet.create({
         // CardList
         CardList : { position : 'relative' , flex : 1 , width : (width * 0.28) , height : (height * 0.09) , borderRadius : (width * 0.28) / 16 , overflow : 'hidden'  },
         CardListImage : { position : 'absolute' , width : (width * 0.33) , height : (height * 0.11)  },
+        ContainerCard : { flex : 1 , width : (width) , height : ( height * 0.28 ) , justifyContent : 'center' , alignItems : 'center' },
+        CardWishList : { width : (width * 0.9) , height : (height * 0.23) , borderRadius : 25  },
+        CardThumbnail : { width : (width * 0.25) , height : (width * 0.25) , borderRadius : 10 , marginLeft : 15 },
 
         // ListViewContent
 
@@ -113,22 +116,113 @@ const Components = StyleSheet.create({
             elevation: 13,
             
         },
+
+        // Modal Search
+        
+        ModalSearch : { width : (width * 0.9) , height : (height * 0.07) , backgroundColor : 'white' , borderRadius : 5 },
+
+        // HeaderThumbnail
+
+        HeaderThumbnail : {
+
+            flex : 1,
+            width : width
+
+        },
         
         // Font
         BitterBold : { fontFamily : 'BitterBold' },
         BitterRegular : { fontFamily : 'BitterRegular' },
+        FICONS : { fontSize : 8 },
         FSXS : { fontSize : 14 },
         FSS : { fontSize : 18 },
         FSM : { fontSize : 22 },
         FSL : { fontSize : 26 },
         FSXL : { fontSize : 30 },
 
-        CityLight : { color : '#dfe6e9' }
+        CityLight : { color : '#dfe6e9' },
+
+        // Icons
+
+        IconShadow : {
+            textShadowColor: 'rgba(0, 0, 0, 0.75)',
+            textShadowOffset: {width: -1, height: 1},
+            textShadowRadius: 10
+        },
+
+        // Wishlist Products
+
+        TitleWishlistProduct : { width : (width * 0.85) , height : (height * 0.05)  },
+        ProductPrimaryData : { width : (width * 0.85) , height : (height * 0.15) },
+        DescriptionProduct : { width : (width * 0.83) , height : 'auto' },
+        BlankBox : { width : (width * 0.83) , height : (height * 0.10) },
+        PrimaryDataProductType : { width : ( width * 0.2 ) , height : (width * 0.21) , borderRadius : 15 , overflow : 'hidden' },
+        PrimaryDataRegion : { width : (width * 0.3) , height : (width * 0.21) , borderRadius : 15 , overflow : 'hidden' },
+        PrimaryDataRating : { width : (width * 0.25) , height : (width * 0.21) ,  borderRadius : 15 , overflow : 'hidden' },
+        ContainerWishlistProductMap : { position : 'absolute' , width : (width * 0.20) , height : (width * 0.20) , zIndex : 9 , 
+            right : 10 , top : (height * 0.37)
+        },
+        ModalPriceFilter : { flex : 1, width : width , height : (height * 0.45) , borderTopLeftRadius : 10 , borderTopRightRadius : 10 , overflow : 'hidden' , marginBottom : 0 , marginLeft : 0 },
+        PriceFilter : { width : width , height : (height * 0.45) , borderTopLeftRadius : 10 , borderTopRightRadius : 10 , overflow : 'hidden' , bottom : 0 , marginLeft : 0  },
+        FabButtonProductMap : {
+
+            width : (width * 0.15) , height : (width * 0.15) , borderRadius : (width * 0.15 / 2) , backgroundColor : '#55efc4'
+            
+        },
+
+        // Wishlist Product Maps
+
+        WishlistProductMap : { width : width , height : height },
+
+
+        // Notifications
+
+        CardContentContainer : {
+            width : width , height : ( height * 0.45 ) , flex : 1 , justifyContent : 'center' , alignItems : 'center'
+        },
+        CardNotificationContent : { width : (width * 0.9) , height : (height * 0.41) },
+         
+        
+        
+
+        
+
+})
+
+
+const Colors = StyleSheet.create({
+
+    // v1 (Background Colors)
+
+    // (White , Grey & Dark )
+    AmericanRiverBG : { backgroundColor : '#636e72' },
+    DraculaOrchidBG : { backgroundColor : '#2d3436' },
+    CityLightBG : { backgroundColor : '#dfe6e9' },
+    SoothingBreezeBG : { backgroundColor : '#b2bec3' },
+    LynxWhiteBG : { backgroundColor : '#f5f6fa' },
+    // (Green Dark & Light)
+    JuneBudBG : { backgroundColor : '#badc58' },
+    PureAppleBG : { backgroundColor : '#6ab04c' },
+
+    // v1 (Text Colors)
+    // (White , Grey & Dark )
+    AmericanRiverText : { color : '#636e72' },
+    DraculaOrchidText : { color : '#2d3436' },
+    CityLightText : { color : '#dfe6e9' },
+    SoothingBreezeText : { color : '#b2bec3' },
+    LynxWhiteText : { color : '#f5f6fa' },
+    // (Green Dark & Light)
+    JuneBudText : { color : '#badc58' },
+    PureAppleText: { color : '#6ab04c' },
+
 
 })
 
 export {
 
-    Components
+    Components,
+    width,
+    height,
+    Colors
 
 }

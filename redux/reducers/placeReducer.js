@@ -1,8 +1,9 @@
-import { SEARCH_MODAL } from '../actions/types'
+import { PLACE_CONTENT } from '../actions/types'
+
 
 const initialState = {
 
-    isOpen : false
+    place_id : null
 
 }
 
@@ -10,15 +11,17 @@ export default (state = initialState , action) => {
 
     switch(action.type) {
 
-        case SEARCH_MODAL:
+        case PLACE_CONTENT : 
             return {
                 ...state,
-                isOpen : action.payload
+                place_id : action.payload
             }
 
         default :
             return state
+        
 
     }
+
 
 }

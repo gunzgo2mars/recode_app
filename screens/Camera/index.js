@@ -71,6 +71,7 @@ class Camera extends React.Component {
                 <Modal
                     isVisible={this.state.isCameraOpen}
                     style={[ Components.flex1 , Components.ModalCamera ]}
+                    
                 >
                     <View style={[ Components.flex1 ]}>
                         <RNCamera
