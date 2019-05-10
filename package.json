@@ -7,6 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "lottie-react-native": "^2.6.1",
     "prop-types": "^15.7.2",
     "react": "16.6.3",
@@ -14,7 +15,9 @@
     "react-native-camera": "^2.0.0",
     "react-native-cardview": "^2.0.2",
     "react-native-elements": "^1.1.0",
+    "react-native-fetch-blob": "^0.10.8",
     "react-native-gesture-handler": "^1.1.0",
+    "react-native-image-picker": "^0.28.1",
     "react-native-image-progress": "^1.1.1",
     "react-native-linear-gradient": "^2.5.3",
     "react-native-lottie-rating": "0.0.11",

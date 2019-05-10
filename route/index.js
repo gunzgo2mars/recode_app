@@ -25,6 +25,7 @@ import HomeScreen from '../screens/Home'
 /// # Tab -> Camera Stack
 import CameraScreen from '../screens/Camera'
 import ProductScreen from '../screens/Product'
+import AddProductScreen from '../screens/Product/AddProduct'
 
 /// # Tab -> Wishlist Stack
 import WishlistScreen from '../screens/Wishlist'
@@ -180,6 +181,17 @@ const HomeStack = createStackNavigator({
     Product : {
 
         screen : ProductScreen,
+        navigationOptions : {
+
+            header : Header
+
+        }
+
+    },
+
+    AddProduct : {
+
+        screen : AddProductScreen,
         navigationOptions : {
 
             header : Header

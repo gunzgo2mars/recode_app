@@ -1,4 +1,4 @@
-import { PRODUCT_MODAL } from './types'
+import { PRODUCT_MODAL , PRODUCT_BACKGROUND_IMAGE } from './types'
 
 const productModal = (isVisible) => dispatch => {
 
@@ -11,9 +11,21 @@ const productModal = (isVisible) => dispatch => {
 
 }
 
+const productBackgroundImage = (uri) => dispatch => {
+
+    dispatch({
+
+        type : PRODUCT_BACKGROUND_IMAGE,
+        payload : uri
+
+    })
+
+}
+
 
 export {
 
-    productModal
+    productModal,
+    productBackgroundImage
 
 }

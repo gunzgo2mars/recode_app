@@ -1,8 +1,9 @@
-import { PRODUCT_MODAL } from '../actions/types'
+import { PRODUCT_MODAL , PRODUCT_BACKGROUND_IMAGE } from '../actions/types'
 
 const initialState = {
 
-    isProductModalVisible : true
+    isProductModalVisible : true,
+    productBackgroundImage : null
 
 }
 
@@ -15,6 +16,12 @@ export default (state = initialState , action) => {
             return {
                 ...state,
                 isProductModalVisible : action.payload
+            }
+
+        case PRODUCT_BACKGROUND_IMAGE : 
+            return {
+                ...state,
+                productBackgroundImage : action.payload
             }
 
         default:

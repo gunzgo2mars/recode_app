@@ -1,20 +1,35 @@
 // #Core
 import React from 'react'
-import { View , Text , TouchableOpacity , Animated , Image , ScrollView } from 'react-native'
+import { View , Text , TouchableOpacity , Animated , Easing , Image , ScrollView } from 'react-native'
 import PropTypes from 'prop-types'
+import axios from 'axios'
+// # Services
+import { ReadProductByBarCode } from '../../services/API/Read'
 
 // #Redux
 import { connect } from 'react-redux'
+import { productBackgroundImage , productModal } from '../../redux/actions/productAction'
+import { pushToAddProduct } from '../../redux/actions/pushAction'
 // #Components & Layouts
-
-import { Components } from '../ComponentStyles'
+import { RkButton , RkTheme } from 'react-native-ui-kitten'
+import { Components , width , Colors } from '../ComponentStyles'
 import Swiper from 'react-native-swiper'
 import Modal from 'react-native-modal'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import FontAwesomePro from 'react-native-vector-icons/FontAwesome5Pro'
 import { ListViewReview } from '../../components/ListView'
 
+// Lottie
+import anim from '../../lottie/404Product.json'
 
-class ModalContent extends React.Component {
+RkTheme.setType('RkButton', 'icon', {
+    fontSize: 24,
+    width: 46,
+    borderRadius: 25,
+    hitSlop: {top: 5, left: 5, bottom: 5, right: 5}
+})
+
+class ModalContentRedux extends React.Component {
 
     constructor(props) {
 
@@ -23,9 +38,59 @@ class ModalContent extends React.Component {
         this.state = {
 
             activeTab : 'overview',
-
+            isFound : null,
+            payload : [],
+            progress: new Animated.Value(0),
+            notFound : false,
         }
 
+    }
+
+    componentDidMount() {
+
+
+        ReadProductByBarCode(this.props.barCode)
+            .then(res => {
+
+                    if(res.data.length === 0) {
+
+                        console.warn("Length = 0")
+                        return 
+                    }
+
+
+                    if(res.data.error) {
+
+                        if(res.data.message === 'sql: no rows in result set') {
+
+                            this.setState({ isFound : false })
+
+                            return
+
+                        }
+                        
+
+                    } else {
+
+                        this.setState({ payload : res.data.payload , isFound : true })
+
+                    }
+
+                })
+                .catch(err => console.warn(err))
+                .then(() => this.props.productBackgroundImage(this.state.payload.thumbnail))
+
+
+        
+        
+
+    }
+
+    _pushToAddProduct = async () => {
+
+        await this.setState({ notFound : true })
+
+        await this.props.pushToAddProduct((this.state.notFound ? true : false))
 
     }
     
@@ -40,20 +105,19 @@ class ModalContent extends React.Component {
                         <Text
                             style={[ Components.BitterBold , Components.FSM ]}
                         >
-                            Pepsi
+                            {this.state.payload.name}
                         </Text>
                     </View>
                     <View style={[ Components.flex1 , Components.PTM , Components.PLL , Components.FlexDirRow ]}>
 
                         <FontAwesome size={16} name={'dollar'} />
                         <Text style={[ Components.BitterRegular , Components.FSS , Components.MLS ]}>
-                            300
+                            {this.state.payload.price}
                         </Text>
                     </View>
                     <View style={[ Components.flex3 , Components.PTM , Components.PLM ]}>
                         <Text style={[ Components.BitterRegular , Components.FSXS ]}>
-                            React Native lets you build mobile apps using only JavaScript. 
-                            It uses the same design as React, letting you compose a rich mobile UI using declarative components.
+                            {this.state.payload.detail}
                         </Text>
                     </View>
                     <View style={[ Components.flex1 ]}>
@@ -72,21 +136,21 @@ class ModalContent extends React.Component {
                 <Swiper style={[Components.flex1]} dotColor={'#dfe6e9'} activeDotColor={'#2d3436'}>
                     <View style={[ Components.flex1 ]}>
                         <Image 
-                            source={{ uri : 'https://static1.squarespace.com/static/5899e78b1b10e35238fba886/t/5bb61d811905f495c2e71d7a/1538661765948/shutterstock_1057480949.jpg?format=750w' }}
-                            style={[Components.ImagePhotoTab]}
-                            resizeMode={'cover'}
-                        /> 
-                    </View>
-                    <View style={[ Components.flex1]}>
-                        <Image 
-                            source={{ uri : 'http://www.thebiojournal.com/wp-content/uploads/2017/03/Pepsi-Bottle-1200x639.jpg' }}
+                            source={{ uri : 'http://192.168.122.1:1234/payload/storage/products/gallery/' + this.state.payload.gallery.first_image }}
                             style={[Components.ImagePhotoTab]}
                             resizeMode={'cover'}
                         />
                     </View>
                     <View style={[ Components.flex1]}>
                         <Image 
-                            source={{ uri : 'https://www.pepsicolahudsonvalley.com/wp-content/uploads/2017/10/Pepsi-retouched-e1510352474440.jpg' }}
+                            source={{ uri : 'http://192.168.122.1:1234/payload/storage/products/gallery/' + this.state.payload.gallery.second_image }}
+                            style={[Components.ImagePhotoTab]}
+                            resizeMode={'cover'}
+                        />
+                    </View>
+                    <View style={[ Components.flex1]}>
+                        <Image 
+                            source={{ uri : 'http://192.168.122.1:1234/payload/storage/products/gallery/' + this.state.payload.gallery.third_image }}
                             style={[Components.ImagePhotoTab]}
                             resizeMode={'cover'}
                         />
@@ -114,7 +178,7 @@ class ModalContent extends React.Component {
 
         return (
             <Modal
-                isVisible={this.props.isVisible}
+                isVisible={(this.state.notFound ? (false) : (this.props.isVisible))}
                 backdropOpacity={0.5}
                 style={[ Components.ModalContent , Components.flex1 , Components.FlexAIEnd , Components.FlexJCEnd , Components.z7]}
             >
@@ -125,7 +189,8 @@ class ModalContent extends React.Component {
                     <FontAwesome name={'chevron-left'} size={22} color={'#FFFFFF'} />
                 </TouchableOpacity>
                 <View style={[ Components.ModalContentCard , { backgroundColor : '#ecf0f1' , overflow : 'hidden' } ]}>
-                    <View style={[ Components.flex1 ]}>
+                    {this.state.isFound ? (
+                        <View style={[ Components.flex1 ]}>
                         <View style={[ Components.flex1 , Components.FlexDirRow ]}>
                             <View style={[ Components.flex1 ]}>
                                 <TouchableOpacity
@@ -162,6 +227,27 @@ class ModalContent extends React.Component {
                         {this.state.activeTab === 'photo' ? <Photo /> : null}
                         {this.state.activeTab === 'review' ? <Review /> : null}
                     </View>
+                    ) : (
+                        <View style={[ Components.flex1 , Components.FlexAICenter , Components.FlexJCCenter ]}>
+                            
+                            <View style={[ Components.flex3 , Components.FlexAICenter , Components.FlexJCCenter ]}>
+
+                                <FontAwesome name={'folder-open'} size={width * 0.4} color={'#636e72'} />
+                                <Text style={[ Components.MTS , Colors.AmericanRiverText , Components.FSM ]}>
+                                    ไม่ข้อมูลสินค้าชนิดนี้
+                                </Text>
+                            </View>
+                            
+                            <View style={[ Components.flex1 , Components.FlexAICenter , Components.FlexJCCenter ]}>
+                                <RkButton rkType='success' >
+                                    <TouchableOpacity onPress={() => this._pushToAddProduct()}>
+                                        <Text>เพิ่มข้อมูล</Text>
+                                    </TouchableOpacity>
+                                </RkButton>
+                                
+                            </View>
+                        </View>
+                    )}
                 </View>
             </Modal>
         )
@@ -170,14 +256,20 @@ class ModalContent extends React.Component {
 
 }
 
-ModalContent.propTypes = {
+ModalContentRedux.propTypes = {
 
     onPress : PropTypes.func.isRequired,
-    isVisible : PropTypes.bool.isRequired
+    isVisible : PropTypes.bool.isRequired,
 
 }
 
+const mapStateToProps = state => ({
 
+    barCode : state.camera.barCode
+
+})
+
+const ModalContent = connect(mapStateToProps , { productBackgroundImage , productModal , pushToAddProduct })(ModalContentRedux)
 
 export {
 
